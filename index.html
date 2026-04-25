@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Multiguna - Pinjaman Dana Tambahan</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-900: #001d3d;
+  --blue-800: #003068;
+  --blue-700: #003f88;
+  --blue-600: #005baa;
+  --blue-500: #0072d6;
+  --blue-400: #3d9be9;
+  --blue-100: #e8f1fb;
+  --blue-50: #f0f6ff;
+  --gold-500: #d4920a;
+  --gold-400: #F5A623;
+  --gold-300: #ffc655;
+  --green-600: #059669;
+  --green-500: #0a7c5c;
+  --green-100: #d1fae5;
+  --red-600: #dc2626;
+  --red-500: #d0021b;
+  --red-100: #fee2e2;
+  --amber-600: #d97706;
+  --amber-500: #c87000;
+  --amber-100: #fef3c7;
+  --gray-900: #0f172a;
+  --gray-700: #334155;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+  --white: #ffffff;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --shadow-sm: 0 1px 3px rgba(0,31,61,0.06);
+  --shadow-md: 0 4px 16px rgba(0,31,61,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,31,61,0.12);
+  --shadow-xl: 0 12px 48px rgba(0,31,61,0.16);
+  --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; min-height: 100vh; overflow-x: hidden; background: var(--gray-50); font-family: var(--font); color: var(--gray-900); }
+input, button, select, textarea { font-family: inherit; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--gray-50);
+  position: relative;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-700) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar .brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar .brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+  color: #fff;
+}
+.topbar .brand-label {
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.topbar .brand-label span { color: var(--gold-400); }
+.topbar .back-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+.topbar .back-btn:active { background: rgba(255,255,255,0.2); }
+.topbar .user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  color: var(--blue-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+/* ===== PAGE ===== */
+.page {
+  display: none;
+  padding: 20px 18px 40px;
+  animation: fadeIn 0.25s ease;
+}
+.page.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-900) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 24px;
+}
+.login-brand {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.login-brand .icon-big {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 22px;
+  color: #fff;
+  margin: 0 auto 16px;
+}
+.login-brand .title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1.5px;
+}
+.login-brand .title span { color: var(--gold-400); }
+.login-brand .sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+.login-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  box-shadow: var(--shadow-lg);
+}
+.login-card h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+.login-card .desc {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 20px;
+}
+.input-group {
+  margin-bottom: 14px;
+}
+.input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-700);
+  margin-bottom: 6px;
+}
+.input-group input, .input-group select, .input-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--gray-900);
+  background: var(--gray-50);
+  transition: all 0.2s;
+}
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  background: #fff;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-700) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,114,214,0.25);
+}
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled {
+  background: var(--gray-300);
+  color: var(--gray-500);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-500) 100%);
+  color: var(--blue-900);
+  box-shadow: 0 2px 8px rgba(245,166,35,0.3);
+}
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  color: var(--blue-700);
+  border: 1.5px solid var(--blue-200, var(--blue-100));
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== HOME / WELCOME ===== */
+.welcome-card {
+  background: linear-gradient(135deg, var(--blue-700) 0%, var(--blue-800) 100%);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  color: #fff;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+.welcome-card .greeting {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.welcome-card .name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+.welcome-card .name span { color: var(--gold-400); }
+
+.section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gray-700);
+  letter-spacing: 0.5px;
+  margin: 6px 0 12px;
+  text-transform: uppercase;
+}
+
+/* ===== MENU CARD ===== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.menu-card {
+  background: #fff;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.menu-card:active { transform: scale(0.98); }
+.menu-card:hover {
+  border-color: var(--blue-400);
+  box-shadow: var(--shadow-md);
+}
+.menu-card .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-500) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--blue-900);
+  flex-shrink: 0;
+}
+.menu-card .info {
+  flex: 1;
+  min-width: 0;
+}
+.menu-card .info .label {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+.menu-card .info .desc {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+.menu-card .chevron {
+  color: var(--gray-400);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* ===== SUBMENU ITEM ===== */
+.submenu-item {
+  background: #fff;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.submenu-item:active { transform: scale(0.98); }
+.submenu-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue-500);
+}
+.submenu-item .label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+.submenu-item .chevron {
+  color: var(--gray-400);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* ===== INFO CARD (loan detail) ===== */
+.info-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+.info-card .card-label {
+  font-size: 11px;
+  color: var(--gray-500);
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--gray-200);
+  font-size: 13px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .key { color: var(--gray-500); font-weight: 600; }
+.info-row .val { color: var(--gray-900); font-weight: 700; text-align: right; }
+
+/* ===== PLAFON GRID ===== */
+.plafon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.plafon-card {
+  background: #fff;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.plafon-card:active { transform: scale(0.97); }
+.plafon-card:hover {
+  border-color: var(--blue-500);
+  box-shadow: var(--shadow-md);
+}
+.plafon-card.selected {
+  border-color: var(--blue-600);
+  background: var(--blue-50);
+}
+.plafon-card .amount {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--blue-700);
+}
+.plafon-card .currency {
+  font-size: 10px;
+  color: var(--gray-500);
+  font-weight: 700;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+.plafon-card.selected .check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue-600);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== UPLOAD AREAS ===== */
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+.upload-box {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: 18px 8px;
+  text-align: center;
+  background: var(--gray-50);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.upload-box:active { transform: scale(0.98); }
+.upload-box.uploaded {
+  border-style: solid;
+  border-color: var(--green-500);
+  background: var(--green-100);
+}
+.upload-box .upload-icon {
+  font-size: 22px;
+  color: var(--gray-400);
+}
+.upload-box.uploaded .upload-icon {
+  color: var(--green-600);
+}
+.upload-box .upload-label {
+  font-size: 11px;
+  color: var(--gray-700);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.upload-box.uploaded .upload-label { color: var(--green-600); }
+.upload-box .upload-status {
+  font-size: 10px;
+  color: var(--gray-500);
+  font-weight: 600;
+}
+.upload-box.uploaded .upload-status { color: var(--green-600); }
+
+/* ===== NOTIFICATION OVERLAY ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,29,61,0.6);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+.modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow-xl);
+  text-align: center;
+}
+.modal .badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-600);
+  font-size: 30px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.modal h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+.modal p {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.code-box {
+  background: var(--gray-50);
+  border: 1.5px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.code-box .code-label {
+  font-size: 10px;
+  color: var(--gray-500);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.code-box .code-value {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--blue-700);
+  letter-spacing: 1.5px;
+  font-family: 'Courier New', monospace;
+}
+.code-box .copy-btn {
+  background: var(--blue-500);
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.code-box .copy-btn.copied { background: var(--green-600); }
+
+/* ===== PRIVY PAGE ===== */
+.privy-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  color: #fff;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+.privy-header .privy-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+}
+.privy-header .privy-text {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.privy-header .privy-text small {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  margin-top: 2px;
+}
+
+/* ===== BIOMETRIC ===== */
+.biometric-frame {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  border: 3px dashed var(--blue-400);
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.biometric-frame.scanning { border-style: solid; border-color: var(--green-500); }
+.biometric-frame .face-icon {
+  font-size: 80px;
+  color: var(--gray-400);
+}
+.biometric-frame.scanning .face-icon { color: var(--green-600); }
+.biometric-frame .scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--blue-500);
+  top: 50%;
+  display: none;
+  animation: scan 1.5s ease-in-out infinite;
+}
+.biometric-frame.active .scan-line { display: block; }
+@keyframes scan {
+  0%, 100% { top: 20%; }
+  50% { top: 80%; }
+}
+
+/* ===== SIGNATURE PAD ===== */
+.signature-pad {
+  background: #fff;
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  height: 180px;
+  margin: 14px 0;
+  position: relative;
+  overflow: hidden;
+}
+.signature-pad canvas {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+.signature-pad .placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  font-size: 12px;
+  pointer-events: none;
+}
+.signature-pad.signed .placeholder { display: none; }
+
+/* ===== COUNTDOWN BANNER ===== */
+.countdown-banner {
+  background: var(--amber-100);
+  border: 1.5px solid var(--amber-500);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.countdown-banner .icon {
+  font-size: 20px;
+}
+.countdown-banner .text {
+  font-size: 12px;
+  color: var(--amber-600);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.countdown-banner .text strong { color: var(--gray-900); }
+
+/* ===== UTIL ===== */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn-row .btn-primary, .btn-row .btn-secondary { flex: 1; }
+.spacer-sm { height: 8px; }
+.spacer-md { height: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div class="app-shell" id="loginShell">
+  <div class="login-page" id="loginPage">
+    <div class="login-brand">
+      <div class="icon-big">M</div>
+      <div class="title">MULTI<span>GUNA</span></div>
+      <div class="sub">DANA TAMBAHAN UNTUK ANDA</div>
+    </div>
+    <div class="login-card">
+      <h2>Masuk ke Akun Anda</h2>
+      <div class="desc">Gunakan email dan password Anda</div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" value="konsumen@gmail.com" />
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" value="••••••" />
+      </div>
+      <button class="btn-primary" onclick="login()">MASUK</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:12px;">
+        <span style="color:var(--gray-500);">
+          Belum punya akun?
+          <a href="#" style="color:var(--blue-600); font-weight:700; text-decoration:none;">Buat akun sekarang</a>
+        </span>
+        <a href="#" style="color:var(--blue-600); font-weight:700; font-size:12px; text-decoration:none;">Lupa password</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP (after login) ===================== -->
+<div class="app-shell" id="appShell" style="display:none;">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none;">‹</button>
+      <div class="brand-row">
+        <div class="brand-icon">M</div>
+        <div class="brand-label">MULTI<span>GUNA</span></div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div class="user-avatar" onclick="toggleLogoutMenu()" style="cursor:pointer;">B</div>
+      <div id="logoutMenu" style="display:none; position:absolute; top:54px; right:14px; background:#fff; border-radius:var(--radius-md); box-shadow:var(--shadow-lg); padding:6px; z-index:150; min-width:140px;">
+        <button onclick="doLogout()" style="display:flex; align-items:center; gap:8px; width:100%; padding:10px 12px; border:none; background:transparent; cursor:pointer; border-radius:var(--radius-sm); font-size:13px; font-weight:700; color:var(--red-600); text-align:left;">
+          <span style="font-size:14px;">⎋</span> LOG OUT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="pageHome">
+    <div class="welcome-card">
+      <div class="greeting">SELAMAT DATANG</div>
+      <div class="name">Bapak <span id="namaKonsumen">Budi Santoso</span></div>
+    </div>
+    <div class="section-title">Menu Utama</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="goTo('pageDetail')">
+        <div class="icon">M</div>
+        <div class="info">
+          <div class="label">MULTIGUNA</div>
+          <div class="desc">Pinjaman dana tambahan jaminan BPKB</div>
+        </div>
+        <div class="chevron">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- (submenu page removed - go directly to detail) -->
+  <div class="page" id="pageMultigunaMenu" style="display:none;"></div>
+
+  <!-- DETAIL PINJAMAN + PLAFON -->
+  <div class="page" id="pageDetail">
+    <div class="section-title">Detail Pinjaman Anda</div>
+    <div class="info-card">
+      <div class="card-label">DATA KONSUMEN</div>
+      <div class="info-row">
+        <div class="key">No. Kontrak</div>
+        <div class="val">12345678910-001</div>
+      </div>
+      <div class="info-row">
+        <div class="key">Nama Konsumen</div>
+        <div class="val">Budi Santoso</div>
+      </div>
+      <div class="info-row">
+        <div class="key">Mobil</div>
+        <div class="val">Toyota Avanza 2021</div>
+      </div>
+      <div class="info-row">
+        <div class="key">Sisa Pokok Hutang</div>
+        <div class="val">Rp 78.500.000</div>
+      </div>
+    </div>
+
+    <div class="section-title">Pilih Plafon Multiguna</div>
+    <div class="plafon-grid" id="plafonGrid"></div>
+
+    <div class="spacer-md"></div>
+    <button class="btn-primary" id="btnAjukanSekarang" disabled onclick="goTo('pageForm')">
+      AJUKAN SEKARANG
+    </button>
+  </div>
+
+  <!-- FORM DATA + UPLOAD -->
+  <div class="page" id="pageForm">
+    <div class="section-title">Data Pengajuan</div>
+    <div class="info-card">
+      <div class="info-row">
+        <div class="key">Plafon Dipilih</div>
+        <div class="val" id="plafonDipilih">Rp 20.000.000</div>
+      </div>
+    </div>
+
+    <div class="section-title">Lengkapi Data Diri</div>
+    <div class="info-card">
+      <div class="input-group">
+        <label>No. WhatsApp / No. HP Aktif</label>
+        <input type="tel" id="formHp" placeholder="08xxxxxxxxxx" />
+      </div>
+      <div class="input-group">
+        <label>Nomor Rekening BCA</label>
+        <input type="text" id="formRek" value="BCA - 6789012345 (a.n. Budi Santoso)" readonly style="background:var(--gray-100); color:var(--gray-500); cursor:not-allowed;" />
+      </div>
+    </div>
+
+    <div class="section-title">Upload Dokumen</div>
+    <div class="upload-grid">
+      <div class="upload-box" data-doc="stnk" onclick="uploadDoc(this)">
+        <div class="upload-icon" data-icon>+</div>
+        <div class="upload-label">Foto STNK</div>
+        <div class="upload-status" data-status>Belum diunggah</div>
+      </div>
+      <div class="upload-box" data-doc="depan" onclick="uploadDoc(this)">
+        <div class="upload-icon" data-icon>+</div>
+        <div class="upload-label">Mobil Tampak Depan</div>
+        <div class="upload-status" data-status>Belum diunggah</div>
+      </div>
+      <div class="upload-box" data-doc="samping" onclick="uploadDoc(this)">
+        <div class="upload-icon" data-icon>+</div>
+        <div class="upload-label">Mobil Tampak Samping</div>
+        <div class="upload-status" data-status>Belum diunggah</div>
+      </div>
+      <div class="upload-box" data-doc="selfie" onclick="uploadDoc(this)">
+        <div class="upload-icon" data-icon>+</div>
+        <div class="upload-label">Selfie dengan Mobil</div>
+        <div class="upload-status" data-status>Belum diunggah</div>
+      </div>
+    </div>
+
+    <div class="spacer-md"></div>
+    <button class="btn-primary" id="btnAjukan" onclick="submitAjukan()">AJUKAN</button>
+  </div>
+
+  <!-- PRIVY SIGNUP -->
+  <div class="page" id="pagePrivySignup">
+    <div class="privy-header">
+      <div class="privy-logo">PID</div>
+      <div class="privy-text">
+        Privy ID
+        <small>Tanda Tangan Elektronik Tersertifikasi</small>
+      </div>
+    </div>
+
+    <div class="section-title">Buat Akun Privy ID</div>
+    <div class="info-card">
+      <div class="input-group">
+        <label>Kode Referensi Pengajuan</label>
+        <input type="text" id="privyKode" readonly />
+      </div>
+      <div class="input-group">
+        <label>NIK (KTP)</label>
+        <input type="text" placeholder="16 digit NIK" />
+      </div>
+      <div class="input-group">
+        <label>Nama Lengkap</label>
+        <input type="text" value="Budi Santoso" />
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" placeholder="email@contoh.com" />
+      </div>
+    </div>
+
+    <div class="section-title">Verifikasi Biometrik (Wajah)</div>
+    <div class="info-card" style="text-align:center;">
+      <p style="font-size:12px; color:var(--gray-500); line-height:1.5;">
+        Posisikan wajah Anda di dalam frame, lalu tekan tombol verifikasi.
+      </p>
+      <div class="biometric-frame" id="biometricFrame">
+        <div class="face-icon" id="faceIcon">◉</div>
+        <div class="scan-line"></div>
+      </div>
+      <div id="biometricStatus" style="font-size:12px; color:var(--gray-500); font-weight:600;">
+        Menunggu verifikasi
+      </div>
+    </div>
+
+    <div class="spacer-md"></div>
+    <button class="btn-primary" id="btnVerifikasi" onclick="doBiometric()">MULAI VERIFIKASI WAJAH</button>
+  </div>
+
+  <!-- PRIVY SIGN CONTRACT -->
+  <div class="page" id="pagePrivySign">
+    <div class="privy-header">
+      <div class="privy-logo">PID</div>
+      <div class="privy-text">
+        Privy ID
+        <small>Tanda Tangan Kontrak</small>
+      </div>
+    </div>
+
+    <div class="countdown-banner">
+      <div class="icon">⏱</div>
+      <div class="text">
+        Anda harus tanda tangan dalam <strong>1 × 24 jam</strong>, atau pengajuan akan otomatis kedaluwarsa.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-label">RINGKASAN KONTRAK</div>
+      <div class="info-row"><div class="key">Nomor Kontrak</div><div class="val" id="ringkasNoKontrak">MTG-2026-04-X</div></div>
+      <div class="info-row"><div class="key">Nama</div><div class="val">Budi Santoso</div></div>
+      <div class="info-row"><div class="key">Plafon</div><div class="val" id="ringkasPlafon">Rp 20.000.000</div></div>
+      <div class="info-row"><div class="key">Tenor</div><div class="val">24 bulan</div></div>
+    </div>
+
+    <div class="spacer-sm"></div>
+    <button class="btn-primary btn-gold" onclick="goTo('pageSignPad')">TANDA TANGAN SEKARANG</button>
+  </div>
+
+  <!-- SIGNATURE PAD PAGE -->
+  <div class="page" id="pageSignPad">
+    <div class="section-title">Tanda Tangan Digital</div>
+    <div class="info-card">
+      <p style="font-size:12px; color:var(--gray-500); line-height:1.5;">
+        Tanda tangan di area di bawah ini menggunakan jari Anda. Pastikan tanda tangan jelas.
+      </p>
+      <div class="signature-pad" id="signaturePad">
+        <canvas id="sigCanvas"></canvas>
+        <div class="placeholder">Tanda tangan di sini</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="clearSig()">HAPUS</button>
+        <button class="btn-primary btn-gold" onclick="confirmSig()">KONFIRMASI</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL: SUCCESS AJUKAN ===================== -->
+<div class="modal-overlay" id="modalAjukan">
+  <div class="modal">
+    <div class="badge">✓</div>
+    <h3>Pengajuan Berhasil</h3>
+    <p>Pengajuan Multiguna Anda berhasil dikirim. Lanjutkan dengan membuat akun Privy ID untuk tanda tangan kontrak digital.</p>
+    <div class="code-box">
+      <div style="text-align:left;">
+        <div class="code-label">Kode Referensi</div>
+        <div class="code-value" id="kodePrivy">PRV-XXXXXX</div>
+      </div>
+      <button class="copy-btn" id="btnCopy" onclick="copyKode()">SALIN</button>
+    </div>
+    <p style="font-size:11px; color:var(--gray-400);">Gunakan kode ini saat sign up Privy ID.</p>
+    <button class="btn-primary" onclick="closeModal('modalAjukan'); goTo('pagePrivySignup');">BUAT AKUN PRIVY ID</button>
+  </div>
+</div>
+
+<!-- ===================== MODAL: PRIVY SIGNUP DONE ===================== -->
+<div class="modal-overlay" id="modalPrivyDone">
+  <div class="modal">
+    <div class="badge">✓</div>
+    <h3>Akun Privy ID Berhasil Dibuat</h3>
+    <p>Silakan tanda tangan kontrak Multiguna Anda dalam <strong>1 × 24 jam</strong>. Jika lewat dari batas waktu, pengajuan akan otomatis kedaluwarsa.</p>
+    <button class="btn-primary btn-gold" onclick="closeModal('modalPrivyDone'); goTo('pagePrivySign');">LANJUT TANDA TANGAN</button>
+  </div>
+</div>
+
+<!-- ===================== MODAL: FINAL ===================== -->
+<div class="modal-overlay" id="modalFinal">
+  <div class="modal">
+    <div class="badge">✓</div>
+    <h3>Terima Kasih</h3>
+    <p>Pengajuan Multiguna Anda <strong>BERHASIL</strong>. Dana akan masuk ke rekening Anda dalam <strong>1 × 24 jam</strong>.</p>
+    <div class="info-card" style="text-align:left; margin-top:8px;">
+      <div class="info-row"><div class="key">Plafon</div><div class="val" id="finalPlafon">Rp 20.000.000</div></div>
+      <div class="info-row"><div class="key">Status</div><div class="val" style="color:var(--green-600);">DISETUJUI</div></div>
+    </div>
+    <button class="btn-primary" onclick="closeModal('modalFinal'); resetToHome();">SELESAI</button>
+  </div>
+</div>
+
+<script>
+/* ============== STATE ============== */
+let history = ['pageHome'];
+let selectedPlafon = null;
+let uploadedDocs = {};
+let kodeReferensi = '';
+
+/* ============== LOGOUT ============== */
+function toggleLogoutMenu() {
+  const menu = document.getElementById('logoutMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+function doLogout() {
+  document.getElementById('logoutMenu').style.display = 'none';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginShell').style.display = 'block';
+  resetToHome();
+}
+// Close logout menu when clicking outside
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('logoutMenu');
+  if (!menu) return;
+  if (!e.target.closest('.user-avatar') && !e.target.closest('#logoutMenu')) {
+    menu.style.display = 'none';
+  }
+});
+
+/* ============== PLAFON RENDER ============== */
+function renderPlafon() {
+  const grid = document.getElementById('plafonGrid');
+  grid.innerHTML = '';
+  for (let amt = 20; amt <= 30; amt += 2) {
+    const card = document.createElement('div');
+    card.className = 'plafon-card';
+    card.dataset.amount = amt;
+    card.innerHTML = `
+      <div class="amount">Rp ${(amt * 1000000).toLocaleString('id-ID')}</div>
+    `;
+    card.onclick = () => selectPlafon(amt, card);
+    grid.appendChild(card);
+  }
+}
+function selectPlafon(amt, card) {
+  document.querySelectorAll('.plafon-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedPlafon = amt;
+  document.getElementById('btnAjukanSekarang').disabled = false;
+  document.getElementById('plafonDipilih').textContent = formatRp(amt * 1000000);
+  document.getElementById('ringkasPlafon').textContent = formatRp(amt * 1000000);
+  document.getElementById('finalPlafon').textContent = formatRp(amt * 1000000);
+}
+function formatRp(n) {
+  return 'Rp ' + n.toLocaleString('id-ID');
+}
+
+/* ============== NAVIGATION ============== */
+function login() {
+  document.getElementById('loginShell').style.display = 'none';
+  document.getElementById('appShell').style.display = 'block';
+  renderPlafon();
+}
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  if (history[history.length - 1] !== pageId) history.push(pageId);
+  document.getElementById('backBtn').style.display = history.length > 1 ? 'flex' : 'none';
+  window.scrollTo(0, 0);
+}
+function goBack() {
+  if (history.length <= 1) return;
+  history.pop();
+  const prev = history[history.length - 1];
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(prev).classList.add('active');
+  document.getElementById('backBtn').style.display = history.length > 1 ? 'flex' : 'none';
+  window.scrollTo(0, 0);
+}
+function resetToHome() {
+  history = ['pageHome'];
+  selectedPlafon = null;
+  uploadedDocs = {};
+  document.querySelectorAll('.plafon-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.upload-box').forEach(b => {
+    b.classList.remove('uploaded');
+    b.querySelector('[data-icon]').textContent = '+';
+    b.querySelector('[data-status]').textContent = 'Belum diunggah';
+  });
+  document.getElementById('btnAjukanSekarang').disabled = true;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('pageHome').classList.add('active');
+  document.getElementById('backBtn').style.display = 'none';
+}
+
+/* ============== UPLOAD ============== */
+function uploadDoc(box) {
+  const doc = box.dataset.doc;
+  uploadedDocs[doc] = true;
+  box.classList.add('uploaded');
+  box.querySelector('[data-icon]').textContent = '✓';
+  box.querySelector('[data-status]').textContent = 'Berhasil diunggah';
+}
+
+/* ============== AJUKAN ============== */
+function submitAjukan() {
+  const docs = ['stnk', 'depan', 'samping', 'selfie'];
+  const missing = docs.filter(d => !uploadedDocs[d]);
+  if (missing.length > 0) {
+    alert('Mohon lengkapi semua dokumen sebelum mengajukan.');
+    return;
+  }
+  kodeReferensi = 'PRV-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+  document.getElementById('kodePrivy').textContent = kodeReferensi;
+  document.getElementById('privyKode').value = kodeReferensi;
+  document.getElementById('ringkasNoKontrak').textContent = 'MTG-' + kodeReferensi.replace('PRV-', '');
+  openModal('modalAjukan');
+}
+
+/* ============== COPY ============== */
+function copyKode() {
+  const btn = document.getElementById('btnCopy');
+  const txt = document.getElementById('kodePrivy').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = 'TERSALIN';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'SALIN';
+      btn.classList.remove('copied');
+    }, 1500);
+  }).catch(() => {
+    btn.textContent = 'TERSALIN';
+    btn.classList.add('copied');
+  });
+}
+
+/* ============== MODAL ============== */
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+/* ============== BIOMETRIC ============== */
+function doBiometric() {
+  const frame = document.getElementById('biometricFrame');
+  const status = document.getElementById('biometricStatus');
+  const btn = document.getElementById('btnVerifikasi');
+  frame.classList.add('active');
+  btn.disabled = true;
+  status.textContent = 'Memindai wajah...';
+  status.style.color = 'var(--blue-500)';
+  setTimeout(() => {
+    frame.classList.remove('active');
+    frame.classList.add('scanning');
+    document.getElementById('faceIcon').textContent = '✓';
+    status.textContent = 'Verifikasi berhasil';
+    status.style.color = 'var(--green-600)';
+    setTimeout(() => {
+      openModal('modalPrivyDone');
+    }, 800);
+  }, 2000);
+}
+
+/* ============== SIGNATURE PAD ============== */
+let sigCtx, sigCanvas, drawing = false, hasSigned = false;
+function initSig() {
+  sigCanvas = document.getElementById('sigCanvas');
+  if (!sigCanvas) return;
+  const rect = sigCanvas.getBoundingClientRect();
+  sigCanvas.width = rect.width;
+  sigCanvas.height = rect.height;
+  sigCtx = sigCanvas.getContext('2d');
+  sigCtx.strokeStyle = '#001d3d';
+  sigCtx.lineWidth = 2;
+  sigCtx.lineCap = 'round';
+
+  const start = (e) => {
+    drawing = true;
+    hasSigned = true;
+    document.getElementById('signaturePad').classList.add('signed');
+    const p = getPoint(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(p.x, p.y);
+  };
+  const move = (e) => {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = getPoint(e);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+  };
+  const end = () => { drawing = false; };
+  const getPoint = (e) => {
+    const r = sigCanvas.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return { x, y };
+  };
+  sigCanvas.addEventListener('mousedown', start);
+  sigCanvas.addEventListener('mousemove', move);
+  sigCanvas.addEventListener('mouseup', end);
+  sigCanvas.addEventListener('touchstart', start);
+  sigCanvas.addEventListener('touchmove', move);
+  sigCanvas.addEventListener('touchend', end);
+}
+function clearSig() {
+  if (!sigCtx) return;
+  sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+  hasSigned = false;
+  document.getElementById('signaturePad').classList.remove('signed');
+}
+function confirmSig() {
+  if (!hasSigned) {
+    alert('Mohon tanda tangan terlebih dahulu.');
+    return;
+  }
+  openModal('modalFinal');
+}
+
+// Init signature pad when its page becomes active
+const observer = new MutationObserver(() => {
+  if (document.getElementById('pageSignPad').classList.contains('active')) {
+    setTimeout(initSig, 100);
+  }
+});
+document.querySelectorAll('.page').forEach(p => {
+  observer.observe(p, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+</body>
+</html>
