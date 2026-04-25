@@ -827,6 +827,12 @@ input, button, select, textarea { font-family: inherit; }
     <div class="section-title">Pilih Plafon Multiguna</div>
     <div class="plafon-grid" id="plafonGrid"></div>
 
+    <div id="tenorSection" style="display:none;">
+      <div class="spacer-md"></div>
+      <div class="section-title">Pilih Tenor</div>
+      <div class="plafon-grid" id="tenorGrid"></div>
+    </div>
+
     <div class="spacer-md"></div>
     <button class="btn-primary" id="btnAjukanSekarang" disabled onclick="goTo('pageForm')">
       AJUKAN SEKARANG
@@ -840,6 +846,10 @@ input, button, select, textarea { font-family: inherit; }
       <div class="info-row">
         <div class="key">Plafon Dipilih</div>
         <div class="val" id="plafonDipilih">Rp 20.000.000</div>
+      </div>
+      <div class="info-row">
+        <div class="key">Tenor</div>
+        <div class="val" id="tenorDipilih">6 bulan</div>
       </div>
     </div>
 
@@ -1049,6 +1059,9 @@ document.addEventListener('click', (e) => {
   }
 });
 
+/* ============== STATE FOR TENOR ============== */
+let selectedTenor = null;
+
 /* ============== PLAFON RENDER ============== */
 function renderPlafon() {
   const grid = document.getElementById('plafonGrid');
@@ -1063,15 +1076,43 @@ function renderPlafon() {
     card.onclick = () => selectPlafon(amt, card);
     grid.appendChild(card);
   }
+  renderTenor();
+}
+function renderTenor() {
+  const grid = document.getElementById('tenorGrid');
+  grid.innerHTML = '';
+  [6, 12, 18, 24, 30].forEach(months => {
+    const card = document.createElement('div');
+    card.className = 'plafon-card';
+    card.dataset.tenor = months;
+    card.innerHTML = `
+      <div class="amount">${months} bulan</div>
+    `;
+    card.onclick = () => selectTenor(months, card);
+    grid.appendChild(card);
+  });
 }
 function selectPlafon(amt, card) {
-  document.querySelectorAll('.plafon-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#plafonGrid .plafon-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
   selectedPlafon = amt;
-  document.getElementById('btnAjukanSekarang').disabled = false;
   document.getElementById('plafonDipilih').textContent = formatRp(amt * 1000000);
   document.getElementById('ringkasPlafon').textContent = formatRp(amt * 1000000);
   document.getElementById('finalPlafon').textContent = formatRp(amt * 1000000);
+  // Show tenor section after plafon is picked
+  document.getElementById('tenorSection').style.display = 'block';
+  updateAjukanButton();
+}
+function selectTenor(months, card) {
+  document.querySelectorAll('#tenorGrid .plafon-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedTenor = months;
+  document.getElementById('tenorDipilih').textContent = months + ' bulan';
+  updateAjukanButton();
+}
+function updateAjukanButton() {
+  const btn = document.getElementById('btnAjukanSekarang');
+  btn.disabled = !(selectedPlafon && selectedTenor);
 }
 function formatRp(n) {
   return 'Rp ' + n.toLocaleString('id-ID');
@@ -1102,8 +1143,10 @@ function goBack() {
 function resetToHome() {
   history = ['pageHome'];
   selectedPlafon = null;
+  selectedTenor = null;
   uploadedDocs = {};
   document.querySelectorAll('.plafon-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('tenorSection').style.display = 'none';
   document.querySelectorAll('.upload-box').forEach(b => {
     b.classList.remove('uploaded');
     b.querySelector('[data-icon]').textContent = '+';
